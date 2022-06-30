@@ -2,7 +2,8 @@
   "swagger": "2.0",
   "info": {
     "version": "2022-04-07-preview",
-    "title": "Azure Communication Service ServerCalling APIs"
+    "title": "Azure Communication Service ServerCalling APIs",
+    "description": "Azure Communication CallingServer Service"
   },
   "schemes": [
     "https"
@@ -296,19 +297,19 @@
         }
       }
     },
-    "/calling/callConnections/{callConnectionId}/content/:play": {
+    "/calling/callConnections/{callConnectionId}/content:play": {
       "post": {
         "tags": [
           "MidConnections"
         ],
-        "summary": "Play audio.",
-        "description": "Play audio.",
+        "summary": "Plays audio to participants in the call.",
+        "description": "Plays audio to participants in the call.",
         "operationId": "Content_Play",
         "parameters": [
           {
             "name": "callConnectionId",
             "in": "path",
-            "description": "",
+            "description": "The call connection ID.",
             "required": true,
             "type": "string"
           },
@@ -334,7 +335,7 @@
           }
         },
         "x-ms-examples": {
-          "Play audio.": {
+          "Plays audio to participants in the call.": {
             "$ref": "./examples/Content_Play.json"
           }
         }
@@ -506,6 +507,167 @@
         "x-ms-examples": {
           "Get a participant from a call.": {
             "$ref": "./examples/CallConnections_GetParticipant.json"
+          }
+        }
+      }
+    },
+    "/calling/recordings": {
+      "post": {
+        "tags": [
+          "Content_Recording"
+        ],
+        "summary": "Start recording the call.",
+        "operationId": "Content_Recording",
+        "parameters": [
+          {
+            "name": "startCallRecording",
+            "in": "body",
+            "description": "The request body of start call recording request.",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/StartCallRecordingRequest"
+            }
+          },
+          {
+            "$ref": "#/parameters/ApiVersionParameter"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Returns the start call recording response.",
+            "schema": {
+              "$ref": "#/definitions/StartCallRecordingResponse"
+            }
+          }
+        },
+        "x-ms-examples": {
+          "Start recording the call.": {
+            "$ref": "./examples/Content_Recording.json"
+          }
+        }
+      }
+    },
+    "/calling/recordings/{recordingId}": {
+      "get": {
+        "tags": [
+          "Content_Recording"
+        ],
+        "summary": "Get call recording properties.",
+        "operationId": "ServerCalls_GetRecordingProperties",
+        "parameters": [
+          {
+            "name": "recordingId",
+            "in": "path",
+            "description": "The recording id.",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "$ref": "#/parameters/ApiVersionParameter"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Returns the recording properties.",
+            "schema": {
+              "$ref": "#/definitions/GetCallRecordingStateResponse"
+            }
+          }
+        },
+        "x-ms-examples": {
+          "Get call recording properties.": {
+            "$ref": "./examples/ServerCalls_GetRecordingProperties.json"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Content_Recording"
+        ],
+        "summary": "Stop recording the call.",
+        "operationId": "ServerCalls_StopRecording",
+        "parameters": [
+          {
+            "name": "recordingId",
+            "in": "path",
+            "description": "The recording id.",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "$ref": "#/parameters/ApiVersionParameter"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Returns the stop call recording response."
+          }
+        },
+        "x-ms-examples": {
+          "Stop recording the call.": {
+            "$ref": "./examples/ServerCalls_StopRecording.json"
+          }
+        }
+      }
+    },
+    "/calling/recordings/{recordingId}/:pause": {
+      "post": {
+        "tags": [
+          "Content_Recording"
+        ],
+        "summary": "Pause recording the call.",
+        "operationId": "ServerCalls_PauseRecording",
+        "parameters": [
+          {
+            "name": "recordingId",
+            "in": "path",
+            "description": "The recording id.",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "$ref": "#/parameters/ApiVersionParameter"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Returns the pause call recording response."
+          }
+        },
+        "x-ms-examples": {
+          "Pause recording the call.": {
+            "$ref": "./examples/ServerCalls_PauseRecording.json"
+          }
+        }
+      }
+    },
+    "/calling/recordings/{recordingId}/:resume": {
+      "post": {
+        "tags": [
+          "Content_Recording"
+        ],
+        "summary": "Resume recording the call.",
+        "operationId": "ServerCalls_ResumeRecording",
+        "parameters": [
+          {
+            "name": "recordingId",
+            "in": "path",
+            "description": "The recording id.",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "$ref": "#/parameters/ApiVersionParameter"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Returns the resume call recording response."
+          }
+        },
+        "x-ms-examples": {
+          "Resume recording the call.": {
+            "$ref": "./examples/ServerCalls_ResumeRecording.json"
           }
         }
       }
@@ -828,7 +990,8 @@
     },
     "PlayRequest": {
       "required": [
-        "playSourceInfo"
+        "playSourceInfo", 
+        "playTo"
       ],
       "type": "object",
       "properties": {
@@ -868,6 +1031,10 @@
       "properties": {
         "sourceType": {
           "$ref": "#/definitions/PlaySourceType"
+        },
+        "playSourceId": {
+          "description": "Defines the identifier to be used for caching related media",
+          "type": "string"
         }
       }
     },
@@ -1018,6 +1185,127 @@
       "properties": {
         "participant": {
           "$ref": "#/definitions/CommunicationIdentifierModel"
+        }
+      }
+    },
+    "RecordingContentType": {
+      "description": "The content type of call recording.",
+      "enum": [
+        "audio",
+        "audioVideo"
+      ],
+      "type": "string",
+      "x-ms-enum": {
+        "name": "RecordingContentType",
+        "modelAsString": true
+      }
+    },
+    "RecordingChannelType": {
+      "description": "The channel type of call recording.",
+      "enum": [
+        "mixed",
+        "unmixed"
+      ],
+      "type": "string",
+      "x-ms-enum": {
+        "name": "RecordingChannelType",
+        "modelAsString": true
+      }
+    },
+    "RecordingFormatType": {
+      "description": "The format type of call recording.",
+      "enum": [
+        "wav",
+        "mp3",
+        "mp4"
+      ],
+      "type": "string",
+      "x-ms-enum": {
+        "name": "RecordingFormatType",
+        "modelAsString": true
+      }
+    },
+    "StartCallRecordingRequest": {
+      "description": "The request payload start for call recording operation with call locator.",
+      "required": [
+        "callLocator"
+      ],
+      "type": "object",
+      "properties": {
+        "callLocator": {
+          "$ref": "#/definitions/CallLocator",
+          "description": "The call locator."
+        },
+        "recordingStateCallbackUri": {
+          "description": "The uri to send notifications to.",
+          "type": "string"
+        },
+        "recordingContentType": {
+          "$ref": "#/definitions/RecordingContentType"
+        },
+        "recordingChannelType": {
+          "$ref": "#/definitions/RecordingChannelType"
+        },
+        "recordingFormatType": {
+          "$ref": "#/definitions/RecordingFormatType"
+        }
+      }
+    },
+    "CallLocatorKind": {
+      "description": "The call locator kind.",
+      "enum": [
+        "groupCallLocator",
+        "serverCallLocator"
+      ],
+      "type": "string",
+      "x-ms-enum": {
+        "name": "CallLocatorKind",
+        "modelAsString": true
+      }
+    },
+    "CallLocator": {
+      "description": "The locator used for joining or taking action on a call.",
+      "type": "object",
+      "properties": {
+        "groupCallId": {
+          "description": "The group call id",
+          "type": "string"
+        },
+        "serverCallId": {
+          "description": "The server call id.",
+          "type": "string"
+        },
+        "kind": {
+          "$ref": "#/definitions/CallLocatorKind"
+        }
+      }
+    },
+    "StartCallRecordingResponse": {
+      "description": "The response payload of start call recording operation.",
+      "type": "object",
+      "properties": {
+        "recordingId": {
+          "description": "The recording id of the started recording",
+          "type": "string"
+        }
+      }
+    },
+    "RecordingState": {
+      "enum": [
+        "active",
+        "inactive"
+      ],
+      "type": "string",
+      "x-ms-enum": {
+        "name": "RecordingState",
+        "modelAsString": true
+      }
+    },
+    "GetCallRecordingStateResponse": {
+      "type": "object",
+      "properties": {
+        "recordingState": {
+          "$ref": "#/definitions/RecordingState"
         }
       }
     }
