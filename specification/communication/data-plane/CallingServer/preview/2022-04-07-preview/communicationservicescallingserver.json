@@ -296,13 +296,13 @@
         }
       }
     },
-    "/calling/callConnections/{callConnectionId}/content/:play": {
+    "/calling/callConnections/{callConnectionId}/content:play": {
       "post": {
         "tags": [
           "MidConnections"
         ],
-        "summary": "Play audio.",
-        "description": "Play audio.",
+        "summary": "Plays audio to participants in the call.",
+        "description": "Plays audio to participants in the call.",
         "operationId": "Content_Play",
         "parameters": [
           {
@@ -334,7 +334,7 @@
           }
         },
         "x-ms-examples": {
-          "Play audio.": {
+          "Plays audio to participants in the call.": {
             "$ref": "./examples/Content_Play.json"
           }
         }
@@ -868,6 +868,10 @@
       "properties": {
         "sourceType": {
           "$ref": "#/definitions/PlaySourceType"
+        },
+        "playSourceId": {
+          "description": "Defines the identifier to be used for caching related media",
+          "type": "string"
         }
       }
     },
@@ -1020,6 +1024,41 @@
           "$ref": "#/definitions/CommunicationIdentifierModel"
         }
       }
+    },
+    "CommunicationErrorResponse": {
+      "description": "The Communication Services error response",
+      "required": [
+        "error"
+      ],
+      "type": "object",
+      "properties": {
+        "error": {
+          "$ref": "#/definitions/CommunicationError"
+        }
+      }
+    },
+    "CommunicationError": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "string"
+        },
+        "message": {
+          "type": "string"
+        },
+        "target": {
+          "type": "string"
+        },
+        "details": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/CommunicationError"
+          }
+        },
+        "innererror": {
+          "$ref": "#/definitions/CommunicationError"
+        }
+      }
     }
   },
   "parameters": {
@@ -1039,6 +1078,43 @@
       "type": "string",
       "x-ms-skip-url-encoding": true,
       "x-ms-parameter-location": "client"
+    }
+  },
+  "responses": {
+    "400": {
+      "description": "BadRequest",
+      "schema": {
+        "$ref": "#/definitions/CommunicationErrorResponse"
+      },
+      "x-ms-error-response": true
+    },
+    "401": {
+      "description": "Unauthorized",
+      "schema": {
+        "$ref": "#/definitions/CommunicationErrorResponse"
+      },
+      "x-ms-error-response": true
+    },
+    "403": {
+      "description": "Forbidden",
+      "schema": {
+        "$ref": "#/definitions/CommunicationErrorResponse"
+      },
+      "x-ms-error-response": true
+    },
+    "404": {
+      "description": "NotFound",
+      "schema": {
+        "$ref": "#/definitions/CommunicationErrorResponse"
+      },
+      "x-ms-error-response": true
+    },
+    "500": {
+      "description": "InternalServerError",
+      "schema": {
+        "$ref": "#/definitions/CommunicationErrorResponse"
+      },
+      "x-ms-error-response": true
     }
   },
   "x-ms-parameterized-host": {
