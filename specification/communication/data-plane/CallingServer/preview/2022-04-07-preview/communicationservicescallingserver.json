@@ -609,7 +609,7 @@
         }
       }
     },
-    "/calling/recordings/{recordingId}/:pause": {
+    "/calling/recordings:pause": {
       "post": {
         "tags": [
           "Content_Recording"
@@ -619,7 +619,7 @@
         "parameters": [
           {
             "name": "recordingId",
-            "in": "path",
+            "in": "query",
             "description": "The recording id.",
             "required": true,
             "type": "string"
@@ -640,7 +640,7 @@
         }
       }
     },
-    "/calling/recordings/{recordingId}/:resume": {
+    "/calling/recordings:resume": {
       "post": {
         "tags": [
           "Content_Recording"
@@ -650,7 +650,7 @@
         "parameters": [
           {
             "name": "recordingId",
-            "in": "path",
+            "in": "query",
             "description": "The recording id.",
             "required": true,
             "type": "string"
@@ -1344,39 +1344,10 @@
       }
     },
     "CommunicationErrorResponse": {
-      "description": "The Communication Services error response",
-      "required": [
-        "error"
-      ],
-      "type": "object",
-      "properties": {
-        "error": {
-          "$ref": "#/definitions/CommunicationError"
-        }
-      }
+      "$ref": "../../../Common/stable/2021-03-07/common.json#/definitions/CommunicationErrorResponse"
     },
     "CommunicationError": {
-      "type": "object",
-      "properties": {
-        "code": {
-          "type": "string"
-        },
-        "message": {
-          "type": "string"
-        },
-        "target": {
-          "type": "string"
-        },
-        "details": {
-          "type": "array",
-          "items": {
-            "$ref": "#/definitions/CommunicationError"
-          }
-        },
-        "innererror": {
-          "$ref": "#/definitions/CommunicationError"
-        }
-      }
+      "$ref": "../../../Common/stable/2021-03-07/common.json#/definitions/CommunicationError"
     }
   },
   "parameters": {
