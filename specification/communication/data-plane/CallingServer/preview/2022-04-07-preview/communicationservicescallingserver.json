@@ -1344,10 +1344,39 @@
       }
     },
     "CommunicationErrorResponse": {
-      "$ref": "../../../Common/stable/2021-03-07/common.json#/definitions/CommunicationErrorResponse"
+      "description": "The Communication Services error response",
+      "required": [
+        "error"
+      ],
+      "type": "object",
+      "properties": {
+        "error": {
+          "$ref": "#/definitions/CommunicationError"
+        }
+      }
     },
     "CommunicationError": {
-      "$ref": "../../../Common/stable/2021-03-07/common.json#/definitions/CommunicationError"
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "string"
+        },
+        "message": {
+          "type": "string"
+        },
+        "target": {
+          "type": "string"
+        },
+        "details": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/CommunicationError"
+          }
+        },
+        "innererror": {
+          "$ref": "#/definitions/CommunicationError"
+        }
+      }
     }
   },
   "parameters": {
