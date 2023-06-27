@@ -1387,7 +1387,7 @@
         },
 		"websocketEnable": {
           "description": "Flag to enable Websocket",
-          "type": "bool"
+          "type": "boolean"
         },
         "callbackUri": {
           "description": "The callback URI.",
