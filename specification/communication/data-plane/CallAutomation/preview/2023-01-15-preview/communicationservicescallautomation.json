@@ -1358,7 +1358,8 @@
     "CreateCallRequest": {
       "description": "The request payload for creating the call.",
       "required": [
-        "targets"
+        "targets",
+        "callbackUri"
       ],
       "type": "object",
       "properties": {
@@ -1384,10 +1385,6 @@
         "operationContext": {
           "description": "A customer set value used to track the answering of a call.",
           "type": "string"
-        },
-		"websocketEnable": {
-          "description": "Flag to enable Websocket",
-          "type": "boolean"
         },
         "callbackUri": {
           "description": "The callback URI.",
@@ -1538,10 +1535,6 @@
           "description": "The callback URI.",
           "type": "string"
         },
-		"websocketUrl": {
-          "description": "The Websocket URI.",
-          "type": "string"
-        },
         "mediaSubscriptionId": {
           "description": "SubscriptionId for media streaming",
           "type": "string"
@@ -1670,6 +1663,10 @@
         },
         "operationContext": {
           "description": "Used by customers when calling mid-call actions to correlate the request to the response event.",
+          "type": "string"
+        },
+        "callbackUriOverride": {
+          "description": "The callback URI override.",
           "type": "string"
         }
       }
@@ -1807,6 +1804,10 @@
         "voiceName": {
           "description": "Voice name to be played\r\nRefer to available Text-to-speech voices here: <seealso href=\"https://learn.microsoft.com/en-us/azure/cognitive-services/speech-service/language-support?tabs=stt-tts\" />",
           "type": "string"
+        },
+        "customVoiceEndpointId": {
+          "description": "Endpoint where the custom voice was deployed.",
+          "type": "string"
         }
       }
     },
@@ -1818,6 +1819,10 @@
       "properties": {
         "ssmlText": {
           "description": "Ssml string for the cognitive service to be played",
+          "type": "string"
+        },
+        "customVoiceEndpointId": {
+          "description": "Endpoint where the custom voice was deployed.",
           "type": "string"
         }
       }
@@ -1887,6 +1892,10 @@
         },
         "speechLanguage": {
           "description": "Speech language to be recognized, If not set default is en-US",
+          "type": "string"
+        },
+        "speechRecognitionModelEndpointId": {
+          "description": "Endpoint where the custom model was deployed.",
           "type": "string"
         },
         "dtmfOptions": {
@@ -2165,6 +2174,10 @@
         "customContext": {
           "$ref": "#/definitions/CustomContext",
           "description": "Used by customer to send custom context to targets"
+        },
+        "callbackUriOverride": {
+          "description": "The callback URI override.",
+          "type": "string"
         }
       }
     },
@@ -2195,6 +2208,10 @@
         },
         "operationContext": {
           "description": "Used by customers when calling mid-call actions to correlate the request to the response event.",
+          "type": "string"
+        },
+        "callbackUriOverride": {
+          "description": "The callback URI override.",
           "type": "string"
         }
       }
